@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <nav>
+            <a href="/">8gag</a> |
+            <a href="/meme/add">Add Meme</a>
+            <div style="float: right;">
+                <a href="">Username</a>
+                <a href="">Your Meme</a>
+                <a href="">Sign Out</a>
+            </div>
+        </nav>
+    </div>
+    <div>
+        <div>
+            <h1>Add Your Meme</h1>
+        </div>
+        <div>
+            <form action="/meme/add" method="post">
+                <div>
+                    <label for="">Title</label><br>
+                    <input type="text" name="title">
+                </div>
+                <div>
+                    <label for="">ImageURL</label><br>
+                    <input type="text" name="imageURL">
+                </div>
+                <div>
+                    <label for="">Tag</label><br>
+                    <select name="TagId" id="">
+                        <option value="" disabled selected>-- Select Tag --</option>
+                    <% tag.forEach(el => { %>
+                        <option value="<%= el.id %>"><%= el.name %></option>
+                    <% }) %>
+                    </select>
+                </div><br>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

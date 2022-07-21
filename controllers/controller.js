@@ -15,6 +15,7 @@ class Controller{
         let meme;
         let tag;
         Meme.findAll({
+            order: [['createdAt', 'DESC']],
             include: [User, {
                 model: Tag,
                 where: opt
@@ -90,10 +91,28 @@ class Controller{
     }
 
     static addMemePage(req, res){
-        Tag.findByPk(1)
+        Tag.findAll()
             .then((tag)=>{
                 console.log(tag)
-                // res.render('add-meme', {tag})
+                res.render('add-meme', {tag})
+            })
+            .catch((err)=>{
+                res.send(err)
+            })
+    }
+
+    static addMeme(req, res){
+        console.log(req.body)
+        const { title, imageURL, TagId } = req.body
+
+        Meme.create({
+            title, 
+            imageURL, 
+            TagId,
+            UserId : 1
+            })
+            .then(()=>{
+                res.redirect('/')
             })
             .catch((err)=>{
                 res.send(err)

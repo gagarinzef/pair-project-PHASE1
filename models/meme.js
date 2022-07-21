@@ -18,9 +18,29 @@ module.exports = (sequelize, DataTypes) => {
     
   }
   Meme.init({
-    title: DataTypes.STRING,
-    imageURL: DataTypes.STRING,
-    TagId: DataTypes.INTEGER,
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {msg: 'Title required'},
+        notEmpty: {msg: 'Title required'}
+      }
+    },
+    imageURL: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {msg: 'Image required'},
+        notEmpty: {msg: 'Image required'}
+      }
+    },
+    TagId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: {msg: 'Tag required'},
+      }
+    },
     UserId: DataTypes.INTEGER
   }, {
     sequelize,
