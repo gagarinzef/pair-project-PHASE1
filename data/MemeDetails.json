@@ -2,46 +2,46 @@
   {
     "comment": "Lucu banget binatangnya",
     "UserId": 1,
-    "MemeId": 1,
+    "MemeId": 1
   },
   {
     "comment": "Lucuan binatang gue",
     "UserId": 2,
-    "MemeId": 1,
+    "MemeId": 1
   },
   {
     "comment": "Keren ya teknologinya",
     "UserId": 2,
-    "MemeId": 2,
+    "MemeId": 2
   },
   {
     "comment": "Iya gw mau beli",
     "UserId": 3,
-    "MemeId": 2,
+    "MemeId": 2
   },
   {
     "comment": "Uda pada nonton belom episode ini?",
     "UserId": 3,
-    "MemeId": 3,
+    "MemeId": 3
   },
   {
     "comment": "No spoiler please",
     "UserId": 4,
-    "MemeId": 3,
+    "MemeId": 3
   },
   {
     "comment": "Serem banget di sekolah tembak-tembakan",
     "UserId": 4,
-    "MemeId": 4,
+    "MemeId": 4
   },
   {
     "comment": "Dimana nih kejadiannya?",
     "UserId": 5,
-    "MemeId": 4,
+    "MemeId": 4
   },
   {
     "comment": "Tangan tetep di keyboard ya..",
     "UserId": 5,
-    "MemeId": 5,
-  },
+    "MemeId": 5
+  }
 ]
