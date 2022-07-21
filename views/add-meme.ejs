@@ -1,35 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css">
-    <title>Document</title>
-</head>
-<%- include('./partials/form-style') %>
-<style>
-    .topnav {
-      overflow: hidden;
-      background-color: #B08B71;
-    }
-    
-    .topnav a {
-      float: left;
-      color: #f2f2f2;
-      text-align: center;
-      padding: 14px 16px;
-      text-decoration: none;
-      font-size: 17px;
-    }
-</style>
+<%- include('partials/header') %>
 <body>
     <%- include('partials/navbar') %>
     <div>
         <div style="display: flex; justify-content:center; margin:40px">
             <h1>Add Your Meme</h1>
         </div>
+        <% if(errors) {%>
+            <div style="display: flex; justify-content:center">
+              <%errors.split(',').map(el=>{%>
+      
+                <p style="color:red; margin-right: 5px">
+                  <%=el%>
+                </p>
+      
+                <%})%>
+            </div>
+            <%}%>
         <div class ="form">
             <form action="/meme/add" method="post" enctype="multipart/form-data">
                 <div>

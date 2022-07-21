@@ -104,11 +104,12 @@ class Controller {
     }
 
     static addMemePage(req, res) {
-        let error = req.query.error
+        const { errors } = req.query
+        console.log(errors)
         const { user } = req.session
         Tag.findAll()
             .then((tag) => {
-                res.render('add-meme', { tag, error, user })
+                res.render('add-meme', { tag, errors, user })
             })
             .catch((err) => {
                 res.send(err)
@@ -118,8 +119,10 @@ class Controller {
     static addMeme(req, res) {
         const { title, TagId } = req.body
         const { id } = req.session.user
-        const { filename } = req.file
-
+        let filename
+        if (req.file) {
+            filename = req.file.filename
+        }
         Meme.create({
             title,
             imageURL: filename,
@@ -131,8 +134,8 @@ class Controller {
             })
             .catch((err) => {
                 if (err.name === "SequelizeValidationError") {
-                    let error = err.errors.map(el => el.message.split('-'))
-                    res.redirect(`/meme/add?error=${error}`)
+                    let errors= err.errors.map(el => el.message)
+                    res.redirect(`/meme/add?errors=${errors}`)
                 } else {
                     res.send(err)
                 }

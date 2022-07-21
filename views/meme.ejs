@@ -1,41 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css">
-    <title>Document</title>
-</head>
-<%- include('./partials/home-style') %>
-<style>
-    .topnav {
-      overflow: hidden;
-      background-color: #B08B71;
-    }
-    
-    .topnav a {
-      float: left;
-      color: #f2f2f2;
-      text-align: center;
-      padding: 14px 16px;
-      text-decoration: none;
-      font-size: 17px;
-    }
-</style>
-<style>
-    p.ex3 {
-        width: 570px;
-        height: 70px;
-        overflow: auto;
-    }
-
-    div.ex3 {
-        width: 100%;
-        height: 300px;
-        overflow: auto;
-    }
-</style>
+<%- include('partials/header') %>
 <body>
 <%- include('partials/navbar') %>
     <div class="row">
@@ -43,7 +6,7 @@
             <h1><%= meme.title %></h1>
             <p><a href="/">Back</a></p>
             <div style="display: flex; justify-content:center; margin-bottom: 20px;">
-                <img src="../uploads/<%=meme.imageURL %>" alt="image of meme">
+                <img class="img-home" src="../uploads/<%=meme.imageURL %>" alt="image of meme">
             </div>
             <% if (query) { %>
                 <% detail.forEach(el => { %>
@@ -65,14 +28,14 @@
                 </form>
             <% } %>
             <% if (detail) { %>
-                <div class="ex3">
+                <div class="ex3" style="margin-top: 30px;">
                 <% detail.forEach(x => { %>
                     <% meme.Users.forEach(y => { %>
                         <% if (x.UserId === y.id) { %>
                         <p style="margin-bottom: 0px; margin-top: 20px;"><%= y.userName %>:</p>
                         <% } %>
                     <% }) %>
-                        <p  class= "ex3" style="border: solid 1px black; border-radius: 5px; padding: 10px; padding-left: 5px; margin: 5px;"><%= x.comment %></p>
+                        <p class= "ex4" style="border: solid 1px black; border-radius: 5px; padding: 10px; padding-left: 5px; margin: 5px;"><%= x.comment %></p>
                         <p style="margin: 0px;"><%=timeSince(x.createdAt)%></p>
                         <% if (x.UserId === user.id) { %>
                             <div style="display: flex; margin-top: 0px;">
