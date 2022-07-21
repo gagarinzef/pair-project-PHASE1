@@ -23,17 +23,7 @@
     }
 </style>
 <body>
-    <div>
-        <nav>
-            <a href="/">8gag</a> |
-            <a href="/meme/add">Add Meme</a>
-            <div style="float: right;">
-                Welcome, <a href="" style="color: blue; text-decoration: none"><%= user.userName %></a>!
-                <a href="">Your Meme</a>
-                <a href="/signOut">Sign Out</a>
-            </div>
-        </nav>
-    </div>
+        <%- include('partials/navbar') %>
     <div style="display: flex; justify-content:center">
         <h1><%= meme.title %></h1>
     </div>
@@ -41,7 +31,7 @@
         <div class="card">
             <p><a href="/">Back</a></p>
             <div style="display: flex; justify-content:center;">
-                <img src="<%=meme.imageURL %>" alt="image of meme">
+                <img src="../uploads/<%=meme.imageURL %>" alt="image of meme">
             </div><br>
             <% if (query) { %>
                 <% detail.forEach(el => { %>

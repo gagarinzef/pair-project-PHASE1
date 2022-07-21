@@ -62,7 +62,6 @@ class Controller {
                 })
             })
             .then((detail) => {
-                // res.send(detail)
                 res.render('meme', { meme, detail, timeSince, user, query })
             })
             .catch((err) => {
@@ -86,10 +85,10 @@ class Controller {
 
     static addMemePage(req, res) {
         let error = req.query.error
-
+        const {user} = req.session
         Tag.findAll()
             .then((tag) => {
-                res.render('add-meme', { tag, error })
+                res.render('add-meme', { tag, error, user })
             })
             .catch((err) => {
                 res.send(err)
@@ -119,7 +118,11 @@ class Controller {
             })
     }
 
-    static delete(req, res) {
+    static deleteMeme(req,res){
+       
+    }
+
+    static deleteComment(req, res) {
         const MemeId = req.params.memeId
         const commentId = req.params.commentId
 
@@ -155,6 +158,9 @@ class Controller {
                 res.redirect(`/meme/${MemeId}`)
             })
     }
+
+    
+
 
 
     static signUpForm(req, res) {

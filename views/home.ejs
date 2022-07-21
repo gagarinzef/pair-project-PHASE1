@@ -9,19 +9,7 @@
 </head>
 
 <body>
-    <div>
-        <nav>
-            <a href="/">8gag</a> |
-            <a href="/meme/add">Add Meme</a>
-            <div style="float: right;">
-                Hi, <%=user.userName%>
-                    <a href="/user/<%=user.id%>/profile">Manage Profile</a>
-                    <a href="/user/<%=user.id%>/account">Manage Account</a>
-                    <a href="">Your Meme</a>
-                    <a href="/signOut">Sign Out</a>
-            </div>
-        </nav>
-    </div>
+<%- include('partials/navbar') %>
     <div style="display: flex; justify-content:center">
         <h1>MEME</h1>
     </div>
@@ -56,10 +44,14 @@
                                 <% if (+key===el.id) { %>
                                     <span>
                                         <%= memeDetail[key] %> <a href="/meme/<%= +key %>">Comments</a>
-                                    </span>
-                                    <% } %>
-                                        <% }%>
-                                            <% } %>
+                                </span>
+                            <% } %>
+                        <% }%>
+                    <% } %>
+                    |
+                    <span>
+                        <a href="/meme/<%= el.id %>/delete"><button>Delete</button></a>
+                </span>
                 </div>
             </div>
         </div>

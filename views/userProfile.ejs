@@ -9,18 +9,7 @@
 </head>
 
 <body>
-  <div>
-    <nav>
-      <a href="/">8gag</a> |
-      <a href="/meme/add">Add Meme</a>
-      <div style="float: right;">
-        Hi, <%=user.userName%>
-          <a href="/user/<%=user.id%>">User Profile</a>
-          <a href="">Your Meme</a>
-          <a href="/signOut">Sign Out</a>
-      </div>
-    </nav>
-  </div>
+  <%- include('partials/navbar') %>
   <div style="display: flex; justify-content:center">
     <h1>
       <%=user.userName%>'s Profile
