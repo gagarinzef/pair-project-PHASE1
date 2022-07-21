@@ -1,17 +1,27 @@
 const { Meme, MemeDetail, User, UserProfile, Tag } = require('../models')
 const bcrypt = require('bcryptjs')
 const { timeSince } = require('../helper/helper')
-const { response } = require('express')
+const { Op } = require("sequelize")
 
 class Controller {
     static home(req, res) {
         const user = req.session.user
         const filter = req.query.filter
+        const search = req.query.search
 
-        let opt = {}
-        if (filter) {
-            opt = {
+        let optUser = {}
+        if (filter){
+            optUser = {
                 name: filter
+            }
+        }
+
+        let optMeme = {}
+        if(search){
+            optMeme = {
+                title: {
+                    [Op.iLike]: `%${search}%`
+                }
             }
         }
 
@@ -21,9 +31,10 @@ class Controller {
             order: [['createdAt', 'DESC']],
             include: [User, {
                 model: Tag,
-                where: opt
-            }]
-        })
+                where: optUser
+            }],
+            where: optMeme
+            })
             .then((data) => {
                 meme = data
                 return Tag.findAll()
@@ -51,7 +62,7 @@ class Controller {
                 model: User,
                 attributes: ['id', 'userName']
             }
-        })
+            })
             .then((data) => {
                 meme = data
                 return MemeDetail.findAll({
@@ -100,12 +111,13 @@ class Controller {
         const { title, TagId } = req.body
         const { id } = req.session.user
         const { filename } = req.file
+
         Meme.create({
             title,
             imageURL: filename,
             TagId,
             UserId: id
-        })
+            })
             .then(() => {
                 res.redirect('/')
             })
@@ -120,7 +132,26 @@ class Controller {
     }
 
     static deleteMeme(req,res){
-       
+       const memeId = +req.params.memeId
+
+       MemeDetail.destroy({
+            where: {
+                MemeId: memeId
+            }
+       })
+       .then(()=>{
+            return Meme.destroy({
+                where: {
+                    id: memeId
+                }
+            })
+       })
+       .then(()=>{
+            res.redirect('/')
+       })
+       .catch((err)=>{
+            res.send(err)
+       })
     }
 
     static deleteComment(req, res) {
@@ -131,7 +162,7 @@ class Controller {
             where: {
                 id: commentId
             }
-        })
+            })
             .then(() => {
                 res.redirect(`/meme/${MemeId}`)
             })
@@ -147,11 +178,11 @@ class Controller {
 
         MemeDetail.update({
             comment
-        }, {
+            }, {
             where: {
                 id: commentId
             }
-        })
+            })
             .then(() => {
                 res.redirect(`/meme/${MemeId}`)
             })
@@ -159,8 +190,6 @@ class Controller {
                 res.redirect(`/meme/${MemeId}`)
             })
     }
-
-    
 
 
 
@@ -288,7 +317,7 @@ class Controller {
             where: {
                 UserId: id
             }
-        })
+            })
             .then(() => {
                 res.redirect(`/user/${id}/profile?success=true`)
             })
@@ -327,8 +356,8 @@ class Controller {
             where: {
                 id
             },
-            individualHooks: true //<< tai!
-        })
+            individualHooks: true
+            })
             .then(() => {
                 res.redirect(`/user/${id}/account?success=true`)
             })
