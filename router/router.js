@@ -8,7 +8,6 @@ const storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-    console.log(file)
     let fileName = ''
 
     if (file.originalname) {
@@ -21,15 +20,11 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 
 
-
-
-// router signUp
 router.get('/signUp', Controller.signUpForm)
 router.post('/signUp', Controller.signUpPost)
-
-//router signIn
 router.get('/signIn', Controller.signInForm)
 router.post('/signIn', Controller.signInPost)
+router.get('/landingPage', Controller.landingPage)
 
 
 router.use(function (req, res, next) {
@@ -40,10 +35,10 @@ router.use(function (req, res, next) {
   }
 })
 
-const isAdmin = function (req,res,next){
-  if(!req.session.user.isAdmin){
+const isAdmin = function (req, res, next) {
+  if (!req.session.user.isAdmin) {
     res.redirect('/')
-  }else{
+  } else {
     next()
   }
 }
