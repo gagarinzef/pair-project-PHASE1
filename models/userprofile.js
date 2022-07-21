@@ -14,14 +14,60 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   UserProfile.init({
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
-    dateOfBirth: DataTypes.DATEONLY,
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "First Name is required"
+        },
+        notEmpty: {
+          msg: "First Name is required"
+        }
+      }
+    },
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "Last Name is required"
+        },
+        notEmpty: {
+          msg: "Last Name is required"
+        }
+      }
+    },
+    dateOfBirth: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "Date of Birth is required"
+        },
+        notEmpty: {
+          msg: "Date of Birth is required"
+        }
+      }
+    },
     bio: DataTypes.TEXT,
-    UserId: DataTypes.INTEGER
+    UserId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "User Id is required"
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'UserProfile',
+    hooks: {
+      beforeCreate: function (userProfile) {
+        userProfile.bio = `You haven't describe your bio yet`
+      }
+    }
   });
   return UserProfile;
 };

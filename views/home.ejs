@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <div>
         <nav>
@@ -14,7 +16,7 @@
             <div style="float: right;">
                 <a href="">Username</a>
                 <a href="">Your Meme</a>
-                <a href="">Sign Out</a>
+                <a href="/signOut">Sign Out</a>
             </div>
         </nav>
     </div>
@@ -26,31 +28,40 @@
         <form action="/" method="get">
             <button>All</button>
         </form>
-    <% tag.forEach(el => { %>
-        <form action="/" method="get">
-            <button name="filter" value="<%= el.name %>"><%= el.name %></button>
-        </form>
-    <% }) %>
+        <% tag.forEach(el=> { %>
+            <form action="/" method="get">
+                <button name="filter" value="<%= el.name %>">
+                    <%= el.name %>
+                </button>
+            </form>
+            <% }) %>
     </div>
-    <% meme.forEach(el => { %>
+    <% meme.forEach(el=> { %>
         <div class="card" style="display: flex; justify-content:center">
             <div>
-                <h3><%= el.title %></h3>
+                <h3>
+                    <%= el.title %>
+                </h3>
                 <img src="<%= el.imageURL %>" alt="image of meme">
                 <div>
-                    <span><%= el.Tag.name %></span> |
-                <% if (!el.Users.length) { %>
-                    <span><a href="meme/<%= el.id %>">Comment</a></span>
-                <% } else { %>
-                    <% for (const key in memeDetail) {%> 
-                        <% if (+key === el.id) { %>
-                            <span><%= memeDetail[key] %> <a href="/meme/<%= +key %>">Comments</a></span>
-                        <% } %>
-                    <% }%>
-                <% } %>
+                    <span>
+                        <%= el.Tag.name %>
+                    </span> |
+                    <% if (!el.Users.length) { %>
+                        <span><a href="meme/<%= el.id %>">Comment</a></span>
+                        <% } else { %>
+                            <% for (const key in memeDetail) {%>
+                                <% if (+key===el.id) { %>
+                                    <span>
+                                        <%= memeDetail[key] %> <a href="/meme/<%= +key %>">Comments</a>
+                                    </span>
+                                    <% } %>
+                                        <% }%>
+                                            <% } %>
                 </div>
             </div>
         </div>
-    <% }) %>
+        <% }) %>
 </body>
+
 </html>
