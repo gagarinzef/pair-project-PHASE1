@@ -1,10 +1,9 @@
 const { Meme, MemeDetail, User, UserProfile, Tag } = require('../models')
 const bcrypt = require('bcryptjs')
 const { timeSince } = require('../helper/helper')
-const { reset } = require('nodemon')
 
 class Controller {
-    static home(req, res) {
+    static home(req, res,) {
         const filter = req.query.filter
 
         let opt = {}
@@ -32,7 +31,8 @@ class Controller {
                 return MemeDetail.countComment()
             })
             .then((memeDetail) => {
-                res.render('home', { meme, tag, memeDetail })
+                const { user } = req.session
+                res.render('home', { meme, tag, memeDetail, user })
             })
             .catch((err) => {
                 res.send(err)
@@ -82,7 +82,6 @@ class Controller {
     static addMemePage(req, res) {
         Tag.findAll()
             .then((tag) => {
-                console.log(tag)
                 res.render('add-meme', { tag })
             })
             .catch((err) => {
@@ -91,14 +90,14 @@ class Controller {
     }
 
     static addMeme(req, res) {
-        console.log(req.body)
-        const { title, imageURL, TagId } = req.body
-
+        const { title, TagId } = req.body
+        const { id } = req.session.user
+        const { filename } = req.file
         Meme.create({
             title,
-            imageURL,
+            imageURL: filename,
             TagId,
-            UserId: 1
+            UserId: id
         })
             .then(() => {
                 res.redirect('/')
@@ -109,7 +108,8 @@ class Controller {
     }
 
     static signUpForm(req, res) {
-        res.render('signUp') //cek kalo ada errornya tampilin error di halaman
+        const { errors } = req.query
+        res.render('signUp', { errors })
     }
 
     static signUpPost(req, res) {
@@ -130,8 +130,7 @@ class Controller {
                 userProfile.UserId = user.id
                 return UserProfile.create(userProfile)
             })
-            .then(data => {
-                // res.send(data) //notify success create user redirect ke sign in page via req query
+            .then(() => {
                 res.redirect('/signIn')
             })
             //2 catch untuk nampung error dari kedua table
@@ -149,18 +148,20 @@ class Controller {
                 err.errors.forEach(el => {
                     return errorMsg.push(el.message)
                 })
-                res.send(errorMsg) //redirect ke halaman sign in + errornya via req query 
+                res.redirect(`/signUp?errors=${errorMsg}`)
+                res.send(errorMsg)
             })
     }
 
 
     static signInForm(req, res) {
-        res.render('signIn') //cek kalo ada errornya tampilin error di halaman
+        const { errors } = req.query
+        res.render('signIn', { errors })
     }
 
     static signInPost(req, res) {
         const { userName, password } = req.body
-        let error
+        let errors
         User.findOne({ where: { userName } })
             .then(user => {
                 if (user) {
@@ -176,12 +177,12 @@ class Controller {
 
                         res.redirect('/')
                     } else {
-                        error = 'username/password ga oke bos'
-                        res.send(error) //redirect ke halaman login lagi kirim error via query
+                        errors = 'Invalid username/password'
+                        res.redirect(`/signIn?errors=${errors}`)
                     }
                 } else {
-                    error = 'kamu kayanya belum daftar bro ga ada username kamu nih di db'
-                    res.send(error)
+                    errors = 'There is no username registered'
+                    res.redirect(`/signIn?errors=${errors}`)
                 }
             })
             .catch(err => {
@@ -197,6 +198,92 @@ class Controller {
                 res.redirect('/signIn')
             }
         })
+    }
+
+    static userProfile(req, res) {
+        const { success, errors } = req.query
+        const { id } = req.params
+        let user
+        User.findByPk(id)
+            .then(userData => {
+                user = userData
+                return UserProfile.findOne({ where: { UserId: id } })
+            })
+            .then(userProfile => {
+                res.render('userProfile', { user, userProfile, success, errors })
+            })
+            .catch(err => {
+                res.send(err)
+            })
+    }
+
+    static userProfilePost(req, res) {
+        const { id } = req.params
+        const { firstName, lastName, dateOfBirth, bio } = req.body
+        const userProfile = {
+            firstName,
+            lastName,
+            dateOfBirth,
+            bio
+        }
+        UserProfile.update(userProfile, {
+            where: {
+                UserId: id
+            }
+        })
+            .then(() => {
+                res.redirect(`/user/${id}/profile?success=true`)
+            })
+            .catch(err => {
+                if (err.name === 'SequelizeValidationError') {
+                    const errors = err.errors.map(el => {
+                        return el.message
+                    })
+                    res.redirect(`/user/${id}/profile?errors=${errors}`)
+                } else {
+                    res.send(err)
+                }
+            })
+    }
+
+    static userAccount(req, res) {
+        const { success, errors } = req.query
+        const { id } = req.params
+        User.findByPk(id)
+            .then(user => {
+                res.render('userAccount', { user, success, errors })
+            })
+            .catch(err => {
+                res.send(err)
+            })
+    }
+
+    static userAccountPost(req, res) {
+        const { email, password } = req.body
+        const { id } = req.params
+        const user = {
+            email,
+            password
+        }
+        User.update(user, {
+            where: {
+                id
+            },
+            individualHooks: true //<< tai!
+        })
+            .then(() => {
+                res.redirect(`/user/${id}/account?success=true`)
+            })
+            .catch(err => {
+                if (err.name === 'SequelizeValidationError') {
+                    const errors = err.errors.map(el => {
+                        return el.message
+                    })
+                    res.redirect(`/user/${id}/account?errors=${errors}`)
+                } else {
+                    res.send(err)
+                }
+            })
     }
 }
 

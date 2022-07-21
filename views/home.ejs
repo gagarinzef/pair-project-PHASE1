@@ -14,9 +14,11 @@
             <a href="/">8gag</a> |
             <a href="/meme/add">Add Meme</a>
             <div style="float: right;">
-                <a href="">Username</a>
-                <a href="">Your Meme</a>
-                <a href="/signOut">Sign Out</a>
+                Hi, <%=user.userName%>
+                    <a href="/user/<%=user.id%>/profile">Manage Profile</a>
+                    <a href="/user/<%=user.id%>/account">Manage Account</a>
+                    <a href="">Your Meme</a>
+                    <a href="/signOut">Sign Out</a>
             </div>
         </nav>
     </div>
@@ -42,7 +44,7 @@
                 <h3>
                     <%= el.title %>
                 </h3>
-                <img src="<%= el.imageURL %>" alt="image of meme">
+                <img src="../uploads/<%= el.imageURL %>" alt="image of meme">
                 <div>
                     <span>
                         <%= el.Tag.name %>

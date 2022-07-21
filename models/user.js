@@ -37,10 +37,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notNull: {
-          msg: "Password is required"
+          msg: "Password cannot be blank"
         },
         notEmpty: {
-          msg: "Password is required"
+          msg: "Password cannot be blank"
         }
       }
     },
@@ -73,5 +73,12 @@ module.exports = (sequelize, DataTypes) => {
 
     }
   });
+  User.beforeUpdate((user) => {
+    const salt = bcrypt.genSaltSync(8)
+    const hash = bcrypt.hashSync(user.password, salt)
+    user.email = user.email.toLowerCase()
+    user.password = hash
+
+  })
   return User;
 };

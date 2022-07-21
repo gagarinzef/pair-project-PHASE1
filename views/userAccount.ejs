@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div>
+    <nav>
+      <a href="/">8gag</a> |
+      <a href="/meme/add">Add Meme</a>
+      <div style="float: right;">
+        Hi, <%=user.userName%>
+          <a href="/user/<%=user.id%>/profile">UserManage
+            <a href="/user/<%=user.id%>/account">Manage Account</a>
+            <a href="">Your Meme</a>
+            <a href="/signOut">Sign Out</a>
+      </div>
+    </nav>
+  </div>
+  <div style="display: flex; justify-content:center">
+    <h1>
+      <%=user.userName%>'s Account
+    </h1>
+  </div>
+
+  <% if (success) {%>
+    <div style="display: flex; justify-content:center">
+      <p style="color:green">
+        <%='Your changes have been successfully saved!'%>
+      </p>
+    </div>
+    <%}else if(errors) {%>
+      <div style="display: flex; justify-content:center">
+        <%errors.split(',').map(el=>{%>
+
+          <p style="color:red; margin-right: 5px">
+            <%=el%>
+          </p>
+
+          <%})%>
+      </div>
+      <%}%>
+
+        <div style="display: flex; justify-content:center">
+          <form action="/user/<%=user.id%>/account" method="POST">
+            <div style="display:flex; flex-direction: column; justify-content: center;">
+              <label style="margin-bottom: 5px;" for="email">Email: </label style="margin-bottom: 5px;">
+              <input style="margin-bottom: 5px;" type="email" name="email" id="email" value="<%=user.email%>">
+              <label style="margin-bottom: 5px;" for="password">Password: </label style="margin-bottom: 5px;">
+              <input style="margin-bottom: 5px;" type="password" name="password" id="password">
+              <input type="submit" value="Update My Account">
+            </div>
+          </form>
+        </div>
+</body>
+
+</html>
