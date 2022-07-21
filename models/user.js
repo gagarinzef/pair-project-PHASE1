@@ -18,7 +18,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   User.init({
-    userName: DataTypes.STRING,
+    userName: {
+      type: DataTypes.STRING,
+      unique: {msg: 'Username already exists '}
+    },
     password: DataTypes.STRING,
     email: DataTypes.STRING,
     isAdmin: DataTypes.BOOLEAN
