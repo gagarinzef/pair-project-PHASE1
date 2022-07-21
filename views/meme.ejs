@@ -43,18 +43,19 @@
             <div style="display: flex; justify-content:center;">
                 <img src="<%=meme.imageURL %>" alt="image of meme">
             </div>
-            <p><%= detail[0].name %></p>
-            <div class="ex3">
-            <% detail.forEach(x => { %>
-                <% meme.Users.forEach(y => { %>
-                    <% if (x.UserId === y.id) { %>
-                    <p style="margin-bottom: 0px;"><%= y.userName %>:</p>
-                    <% } %>
+            <% if (detail) { %>
+                <div class="ex3">
+                <% detail.forEach(x => { %>
+                    <% meme.Users.forEach(y => { %>
+                        <% if (x.UserId === y.id) { %>
+                        <p style="margin-bottom: 0px;"><%= y.userName %>:</p>
+                        <% } %>
+                    <% }) %>
+                        <p  class= "ex3" style="border: solid 1px black; border-radius: 5px; padding: 10px; padding-left: 5px; margin: 0px;"><%= x.comment %></p>
+                        <p style="margin-top: 0px;"><%=timeSince(x.createdAt)%></p>
                 <% }) %>
-                    <p  class= "ex3" style="border: solid 1px black; border-radius: 5px; padding: 10px; padding-left: 5px; margin: 0px;"><%= x.comment %></p>
-                    <p style="margin-top: 0px;"><%=timeSince(x.createdAt)%></p>
-            <% }) %>
-            </div>
+                </div>
+            <% } %>
             <form action="/meme/<%=meme.id %>" method="post">
                 <div>
                     <textarea name="comment" id="" cols="53" rows="2" placeholder="Your Comment..."></textarea>
