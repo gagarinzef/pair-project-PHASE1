@@ -27,6 +27,7 @@ class Controller {
 
         let meme;
         let tag;
+        let memeDetail;
         Meme.findAll({
             order: [['createdAt', 'DESC']],
             include: [User, {
@@ -43,8 +44,12 @@ class Controller {
                 tag = data
                 return MemeDetail.countComment()
             })
-            .then((memeDetail) => {
-                res.render('home', { meme, tag, memeDetail, user })
+            .then((data) => {
+                memeDetail = data
+                return UserProfile.findAll()
+            })
+            .then((profile)=>{
+                res.render('home', { meme, tag, memeDetail, user, profile })
             })
             .catch((err) => {
                 res.send(err)

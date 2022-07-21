@@ -5,8 +5,25 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css">
     <title>Document</title>
 </head>
+<%- include('./partials/home-style') %>
+<style>
+    .topnav {
+      overflow: hidden;
+      background-color: #B08B71;
+    }
+    
+    .topnav a {
+      float: left;
+      color: #f2f2f2;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      font-size: 17px;
+    }
+</style>
 
 <body>
 <%- include('partials/navbar') %>
@@ -14,7 +31,6 @@
         <h1>MEME</h1>
     </div>
     <div style="display: flex; justify-content:center">
-        Choose your category:
         <form action="/" method="get">
             <button>All</button>
         </form>
@@ -26,20 +42,27 @@
             </form>
             <% }) %>
     </div><br>
-    <div style="display: flex; justify-content:center">
+    <div class ="search">
         <form action="/" method="get">
             <input type="text" name="search">
-            <button type="submit">Search</button>
+            <button type="submit" class="btn3">Search</button>
         </form>
     </div>
     <% meme.forEach(el=> { %>
-        <div class="card" style="display: flex; justify-content:center">
-            <div>
+        <div class = "row">
+            <div class = "card">
+            <% profile.forEach(element => { %>
+                <% if (el.UserId === element.UserId) { %>
+                    <p><%= element.getFullName(element.UserId) %></p>
+                <% } %>
+            <% }) %>
                 <h3>
                     <%= el.title %>
                 </h3>
-                <img src="../uploads/<%= el.imageURL %>" alt="image of meme">
-                <div>
+                <div style="display: flex; justify-content:center;">
+                    <img src="../uploads/<%= el.imageURL %>" alt="image of meme">
+                </div>
+                <div style="margin-top: 30px;">
                     <span>
                         <%= el.Tag.name %>
                     </span> |
@@ -56,7 +79,7 @@
                     <% } %>
                     |
                     <span>
-                        <a href="/meme/<%= el.id %>/delete"><button>Delete</button></a>
+                        <a href="/meme/<%= el.id %>/delete"><button class="btn2">Delete</button></a>
                     </span>
                 </div>
             </div>
