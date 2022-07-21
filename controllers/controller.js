@@ -30,7 +30,7 @@ class Controller{
                 return MemeDetail.countComment()
             })
             .then((memeDetail)=>{
-                // res.send(memeDetail)
+                // res.send(meme)
                 res.render('home', {meme, tag, memeDetail})
             })
             .catch((err)=>{
@@ -69,7 +69,7 @@ class Controller{
                 })
             })
             .then((detail)=>{
-                // res.send(meme)
+                // res.send(detail[0])
                 res.render('meme', {meme, detail, timeSince})
             })
             .catch((err)=>{

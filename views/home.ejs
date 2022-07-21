@@ -39,11 +39,15 @@
                 <img src="<%= el.imageURL %>" alt="image of meme">
                 <div>
                     <span><%= el.Tag.name %></span> |
-                <% for (const key in memeDetail) {%> 
-                    <% if (+key === el.id) { %>
-                        <span><%= memeDetail[key] %> <a href="/meme/<%= +key %>">Comments</a></span>
-                    <% } %>
-                <% }%>
+                <% if (!el.Users.length) { %>
+                    <span><a href="meme/<%= el.id %>">Comment</a></span>
+                <% } else { %>
+                    <% for (const key in memeDetail) {%> 
+                        <% if (+key === el.id) { %>
+                            <span><%= memeDetail[key] %> <a href="/meme/<%= +key %>">Comments</a></span>
+                        <% } %>
+                    <% }%>
+                <% } %>
                 </div>
             </div>
         </div>
