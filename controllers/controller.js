@@ -279,7 +279,7 @@ class Controller {
                         res.redirect(`/signIn?errors=${errors}`)
                     }
                 } else {
-                    errors = 'There is no username registered'
+                    errors = 'There is no username registered, register first!'
                     res.redirect(`/signIn?errors=${errors}`)
                 }
             })

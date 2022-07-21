@@ -1,26 +1,4 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css">
-<style>
-  .topnav {
-    overflow: hidden;
-    background-color: #B08B71;
-  }
-  .topnav a {
-    float: left;
-    color: #f2f2f2;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 17px;
-  }
-  .btn1{
-      border: 2px solid rgb(78, 119, 255);
-      background-color: rgb(78, 119, 255);
-      color: white;
-      border-radius: 2px;
-      transition-duration: 0.4s;
-  }
-</style>
-<%- include('./partials/form-style') %>
+<%- include('./partials/header') %>
   <nav>
     <div class="topnav">
       <a href="/signUp">Sign Up</a>
@@ -29,19 +7,20 @@
   <div style="display: flex; justify-content:center; margin:40px">
     <h1>Sign In</h1>
   </div>
-<%if(errors) {%>
-  <%errors.split(',').map(el=>{%>
-    <p style="color:red; margin-right: 5px">
-      <%=el%>
-    </p>
-
-    <%})}%>
     <div class="form">
+      <%if(errors) {%>
+        <%errors.split(',').map(el=>{%>
+          <p style="color:red; margin-right: 5px">
+            <%=el%>
+          </p>
+      
+          <%})}%>
+      
       <form action="/signIn" method="POST">
         <label for="userName">Username</label>
         <input type="text" name="userName" id="userName" required>
         <label for="password">Password</label>
         <input type="password" name="password" id="password" required>
-        <button type="submit" class="btn1">Sign In</button>
+        <button type="submit" class="btn1" >Sign In</button>
       </form>
     </div>
