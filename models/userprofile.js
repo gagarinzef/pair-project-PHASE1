@@ -54,11 +54,6 @@ module.exports = (sequelize, DataTypes) => {
     UserId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      validate: {
-        notNull: {
-          msg: "User Id is required"
-        }
-      }
     }
   }, {
     sequelize,

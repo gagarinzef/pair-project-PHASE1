@@ -1,6 +1,7 @@
 const { Meme, MemeDetail, User, UserProfile, Tag } = require('../models')
 const bcrypt = require('bcryptjs')
 const { timeSince } = require('../helper/helper')
+const { response } = require('express')
 
 class Controller {
     static home(req, res) {
@@ -191,7 +192,7 @@ class Controller {
             })
             //2 catch untuk nampung error dari kedua table
             .catch(err => {
-                if (err.name === 'SequelizeValidationError') {
+                if (err.name === 'SequelizeValidationError' || err.name === 'SequelizeUniqueConstraintError') {
                     errorMsg = err.errors.map(el => {
                         return el.message
                     })
@@ -202,10 +203,11 @@ class Controller {
             })
             .catch(err => {
                 err.errors.forEach(el => {
-                    return errorMsg.push(el.message)
+                    if (el.path !== 'UserId') {
+                        return errorMsg.push(el.message)
+                    }
                 })
                 res.redirect(`/signUp?errors=${errorMsg}`)
-                res.send(errorMsg)
             })
     }
 
@@ -341,6 +343,61 @@ class Controller {
                 }
             })
     }
+
+    static tag(req,res){
+        const {user} = req.session
+        Tag.findAll()
+        .then(tags=>{
+            res.render('tag',{tags, user})
+        })
+    }
+
+    static tagAddForm(req,res){
+        const {success,errors} = req.query
+        const {user} = req.session
+        res.render('tagAdd', {user, success, errors})
+    }
+
+    static tagAddPost(req,res){
+        const {tag} = req.body
+        const tagData = {
+            name: tag
+        }
+        Tag.create(tagData)
+        .then(()=>{
+            res.redirect(`/tag/add?success=true`)
+        })
+        .catch(err=>{
+            if (err.name === 'SequelizeValidationError' || err.name === 'SequelizeUniqueConstraintError') {
+                const errors = err.errors.map(el => {
+                    return el.message
+                })
+                res.redirect(`/tag/add?errors=${errors}`)
+            }else{
+                res.send(err)
+            }
+        })
+    }
+
+
+    static tagDelete(req,res){
+        const tagId = +req.params.tagId
+        Tag.destroy({
+            where:{
+                id: tagId
+            }
+        })
+        .then(()=>{
+            res.redirect('/tag')
+        })
+        .catch(err=>{
+            res.send(err)
+        })
+    }
+
+
+
+    
 }
 
 module.exports = Controller
