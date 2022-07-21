@@ -235,7 +235,6 @@ class Controller {
                     return errorMsg.push(el.message)
                 })
                 res.redirect(`/signUp?errors=${errorMsg}`)
-                res.send(errorMsg)
             })
     }
 
