@@ -5,12 +5,39 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css">
+  <title>Document</title>
   <title>Document</title>
 </head>
+<%- include('./partials/home-style') %>
+<%- include('./partials/form-style') %>
+<style>
+  .topnav {
+    overflow: hidden;
+    background-color: #B08B71;
+  }
+  
+  .topnav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+
+  .btn1{
+      border: 2px solid rgb(78, 119, 255);
+      background-color: rgb(78, 119, 255);
+      color: white;
+      border-radius: 2px;
+      transition-duration: 0.4s;
+    }
+</style>
 
 <body>
   <%- include('partials/navbar') %>
-  <div style="display: flex; justify-content:center">
+  <div style="display: flex; justify-content:center; margin-top: 50px; margin-bottom: 20px;">
     <h1>
       <%=user.userName%>'s Account
     </h1>
@@ -34,14 +61,14 @@
       </div>
       <%}%>
 
-        <div style="display: flex; justify-content:center">
+        <div class="form">
           <form action="/user/<%=user.id%>/account" method="POST">
-            <div style="display:flex; flex-direction: column; justify-content: center;">
-              <label style="margin-bottom: 5px;" for="email">Email: </label style="margin-bottom: 5px;">
-              <input style="margin-bottom: 5px;" type="email" name="email" id="email" value="<%=user.email%>">
-              <label style="margin-bottom: 5px;" for="password">Password: </label style="margin-bottom: 5px;">
-              <input style="margin-bottom: 5px;" type="password" name="password" id="password">
-              <input type="submit" value="Update My Account">
+            <div>
+              <label for="email">Email: </label>
+              <input type="email" name="email" id="email" value="<%=user.email%>">
+              <label for="password">Password: </label>
+              <input type="password" name="password" id="password">
+              <button type="submit" class="btn1">Update My Account</button>
             </div>
           </form>
         </div>

@@ -1,4 +1,30 @@
-<h1>Sign Up</h1>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+  .topnav {
+    overflow: hidden;
+    background-color: #B08B71;
+  }
+  
+  .topnav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+  .btn1{
+      border: 2px solid rgb(78, 119, 255);
+      background-color: rgb(78, 119, 255);
+      color: white;
+      border-radius: 2px;
+      transition-duration: 0.4s;
+  }
+</style>
+<%- include('./partials/form-style') %>
+<div style="display: flex; justify-content:center; margin:40px">
+  <h1>Sign Up</h1>
+</div>
 <%if(errors) {%>
   <%errors.split(',').map(el=>{%>
     <p style="color:red; margin-right: 5px">
@@ -6,24 +32,20 @@
     </p>
 
     <%})}%>
-
+    <div class="form">
       <form action="/signUp" method="POST">
         <label for="userName">Username:</label>
         <input type="text" name="userName" id="userName">
-        <hr>
         <label for="password">Password:</label>
         <input type="password" name="password" id="password">
-        <hr>
         <label for="email">Email:</label>
         <input type="email" name="email" id="email">
-        <hr>
         <label for="firstName">First Name</label>
         <input type="text" name="firstName" id="firstName">
         <label for="lastName">Last Name</label>
         <input type="text" name="lastName" id="lastName">
-        <hr>
         <label for="dateOfBirth">Date Of Birth</label>
         <input type="date" name="dateOfBirth" id="dateOfBirth">
-        <hr>
-        <input type="submit" value="Register">
+        <button type="submit" class="btn1">Register</button>
       </form>
+    </div>
