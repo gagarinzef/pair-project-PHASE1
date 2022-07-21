@@ -17,17 +17,61 @@ module.exports = (sequelize, DataTypes) => {
       })
     }
   }
+
   User.init({
     userName: {
       type: DataTypes.STRING,
-      unique: {msg: 'Username already exists '}
+      unique: { msg: 'Username already exists ' },
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "Username is required"
+        },
+        notEmpty: {
+          msg: "Username is required"
+        }
+      }
     },
-    password: DataTypes.STRING,
-    email: DataTypes.STRING,
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "Password is required"
+        },
+        notEmpty: {
+          msg: "Password is required"
+        }
+      }
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "Email is required"
+        },
+        notEmpty: {
+          msg: "Email is required"
+        }
+      }
+    },
     isAdmin: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'User',
+    hooks: {
+      beforeCreate: function (user) {
+
+        const salt = bcrypt.genSaltSync(8)
+        const hash = bcrypt.hashSync(user.password, salt)
+        user.password = hash
+        user.userName = user.userName.toLowerCase()
+        user.email = user.email.toLowerCase()
+        user.isAdmin = false
+      }
+
+    }
   });
   return User;
 };
