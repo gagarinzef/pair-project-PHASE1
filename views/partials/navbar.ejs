@@ -2,6 +2,10 @@
   <nav>
       <a href="/">8gag</a> |
       <a href="/meme/add">Add Meme</a>
+      <% if (user.isAdmin) {%>
+        <a href="/tag/">Tags</a>
+        <%}%>
+
       <div style="float: right;">
           Hi, <%=user.userName%>
               <a href="/user/<%=user.id%>/profile">Manage Profile</a>
