@@ -1,20 +1,29 @@
-<form action="/signUp" method="POST">
-  <label for="userName">Username:</label>
-  <input type="text" name="userName" id="userName">
-  <hr>
-  <label for="password">Password:</label>
-  <input type="password" name="password" id="password">
-  <hr>
-  <label for="email">Email:</label>
-  <input type="email" name="email" id="email">
-  <hr>
-  <label for="firstName">First Name</label>
-  <input type="text" name="firstName" id="firstName">
-  <label for="lastName">Last Name</label>
-  <input type="text" name="lastName" id="lastName">
-  <hr>
-  <label for="dateOfBirth">Date Of Birth</label>
-  <input type="date" name="dateOfBirth" id="dateOfBirth">
-  <hr>
-  <input type="submit" value="Register">
-</form>
+<h1>Sign Up</h1>
+<%if(errors) {%>
+  <%errors.split(',').map(el=>{%>
+    <p style="color:red; margin-right: 5px">
+      <%=el%>
+    </p>
+
+    <%})}%>
+
+      <form action="/signUp" method="POST">
+        <label for="userName">Username:</label>
+        <input type="text" name="userName" id="userName">
+        <hr>
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password">
+        <hr>
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email">
+        <hr>
+        <label for="firstName">First Name</label>
+        <input type="text" name="firstName" id="firstName">
+        <label for="lastName">Last Name</label>
+        <input type="text" name="lastName" id="lastName">
+        <hr>
+        <label for="dateOfBirth">Date Of Birth</label>
+        <input type="date" name="dateOfBirth" id="dateOfBirth">
+        <hr>
+        <input type="submit" value="Register">
+      </form>

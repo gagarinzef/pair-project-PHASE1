@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <%- include('partials/navbar') %>
+  <div style="display: flex; justify-content:center">
+    <h1>
+      <%=user.userName%>'s Profile
+    </h1>
+  </div>
+
+  <% if (success) {%>
+    <div style="display: flex; justify-content:center">
+      <p style="color:green">
+        <%='Your changes have been successfully saved!'%>
+      </p>
+    </div>
+    <%}else if(errors) {%>
+      <div style="display: flex; justify-content:center">
+        <%errors.split(',').map(el=>{%>
+
+          <p style="color:red; margin-right: 5px">
+            <%=el%>
+          </p>
+
+          <%})%>
+      </div>
+      <%}%>
+
+        <div style="display: flex; justify-content:center">
+          <form action="/user/<%=user.id%>/profile" method="POST">
+            <div style="display:flex; flex-direction: column; justify-content: center;">
+              <label style="margin-bottom: 5px;" for="firstName">First Name: </label style="margin-bottom: 5px;">
+              <input style="margin-bottom: 5px;" type="text" name="firstName" id="firstName"
+                value="<%=userProfile.firstName%>">
+              <label style="margin-bottom: 5px;" for="lastName">Last Name: </label style="margin-bottom: 5px;">
+              <input style="margin-bottom: 5px;" type="text" name="lastName" id="lastName"
+                value="<%=userProfile.lastName%>">
+              <label style="margin-bottom: 5px;" for="dateOfBirth">Date of Birth: </label>
+              <input style="margin-bottom: 5px;" type="date" name="dateOfBirth" id="dateOfBirth"
+                value="<%=userProfile.dateOfBirth%>">
+              <label style="margin-bottom: 5px;" for="bio">Bio: </label>
+              <textarea style="margin-bottom: 5px;" name="bio" id="bio" cols="30"
+                rows="10"><%=userProfile.bio%></textarea>
+              <input type="submit" value="Update My Profile">
+            </div>
+          </form>
+        </div>
+</body>
+
+</html>

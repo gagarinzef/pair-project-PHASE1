@@ -15,30 +15,30 @@ module.exports = (sequelize, DataTypes) => {
         through: models.MemeDetail
       })
     }
-    
+
   }
   Meme.init({
     title: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notNull: {msg: 'Title required'},
-        notEmpty: {msg: 'Title required'}
+        notNull: { msg: 'Title required' },
+        notEmpty: { msg: 'Title required' }
       }
     },
     imageURL: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notNull: {msg: 'Image required'},
-        notEmpty: {msg: 'Image required'}
+        notNull: { msg: 'Image required' },
+        notEmpty: { msg: 'Image required' }
       }
     },
     TagId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
-        notNull: {msg: 'Tag required'},
+        notNull: { msg: 'Tag required' },
       }
     },
     UserId: DataTypes.INTEGER

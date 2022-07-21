@@ -1,10 +1,18 @@
-<nav><a href="/signUp">Register</a></nav>
-<form action="/signIn" method="POST">
-  <label for="userName">Username:</label>
-  <input type="text" name="userName" id="userName">
-  <hr>
-  <label for="password">Password:</label>
-  <input type="password" name="password" id="password">
-  <hr>
-  <input type="submit" value="Sign In">
-</form>
+<nav><a href="/signUp">Sign Up</a></nav>
+<h1>Sign In</h1>
+<%if(errors) {%>
+  <%errors.split(',').map(el=>{%>
+    <p style="color:red; margin-right: 5px">
+      <%=el%>
+    </p>
+
+    <%})}%>
+      <form action="/signIn" method="POST">
+        <label for="userName">Username:</label>
+        <input type="text" name="userName" id="userName" required>
+        <hr>
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" required>
+        <hr>
+        <input type="submit" value="Sign In">
+      </form>

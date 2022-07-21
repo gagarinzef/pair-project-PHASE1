@@ -62,7 +62,6 @@ class Controller {
                 })
             })
             .then((detail) => {
-                // res.send(detail)
                 res.render('meme', { meme, detail, timeSince, user, query })
             })
             .catch((err) => {
@@ -86,10 +85,10 @@ class Controller {
 
     static addMemePage(req, res) {
         let error = req.query.error
-
+        const {user} = req.session
         Tag.findAll()
             .then((tag) => {
-                res.render('add-meme', { tag, error })
+                res.render('add-meme', { tag, error, user })
             })
             .catch((err) => {
                 res.send(err)
@@ -97,21 +96,21 @@ class Controller {
     }
 
     static addMeme(req, res) {
+        const { title, TagId } = req.body
         const { id } = req.session.user
-        const { title, imageURL, TagId } = req.body
-
+        const { filename } = req.file
         Meme.create({
             title,
-            imageURL,
+            imageURL: filename,
             TagId,
             UserId: id
-            })
+        })
             .then(() => {
                 res.redirect('/')
             })
             .catch((err) => {
-                if(err.name === "SequelizeValidationError"){
-                    let error = err.errors.map(el=>el.message.split('-'))
+                if (err.name === "SequelizeValidationError") {
+                    let error = err.errors.map(el => el.message.split('-'))
                     res.redirect(`/meme/add?error=${error}`)
                 } else {
                     res.send(err)
@@ -119,8 +118,54 @@ class Controller {
             })
     }
 
+    static deleteMeme(req,res){
+       
+    }
+
+    static deleteComment(req, res) {
+        const MemeId = req.params.memeId
+        const commentId = req.params.commentId
+
+        MemeDetail.destroy({
+            where: {
+                id: commentId
+            }
+        })
+            .then(() => {
+                res.redirect(`/meme/${MemeId}`)
+            })
+            .catch((err) => {
+                res.send(err)
+            })
+    }
+
+    static editComment(req, res) {
+        const MemeId = req.params.memeId
+        const commentId = req.params.commentId
+        const { comment } = req.body
+
+        MemeDetail.update({
+            comment
+        }, {
+            where: {
+                id: commentId
+            }
+        })
+            .then(() => {
+                res.redirect(`/meme/${MemeId}`)
+            })
+            .catch((err) => {
+                res.redirect(`/meme/${MemeId}`)
+            })
+    }
+
+    
+
+
+
     static signUpForm(req, res) {
-        res.render('signUp') //cek kalo ada errornya tampilin error di halaman
+        const { errors } = req.query
+        res.render('signUp', { errors })
     }
 
     static signUpPost(req, res) {
@@ -141,8 +186,7 @@ class Controller {
                 userProfile.UserId = user.id
                 return UserProfile.create(userProfile)
             })
-            .then(data => {
-                // res.send(data) //notify success create user redirect ke sign in page via req query
+            .then(() => {
                 res.redirect('/signIn')
             })
             //2 catch untuk nampung error dari kedua table
@@ -160,18 +204,20 @@ class Controller {
                 err.errors.forEach(el => {
                     return errorMsg.push(el.message)
                 })
-                res.send(errorMsg) //redirect ke halaman sign in + errornya via req query 
+                res.redirect(`/signUp?errors=${errorMsg}`)
+                res.send(errorMsg)
             })
     }
 
 
     static signInForm(req, res) {
-        res.render('signIn') //cek kalo ada errornya tampilin error di halaman
+        const { errors } = req.query
+        res.render('signIn', { errors })
     }
 
     static signInPost(req, res) {
         const { userName, password } = req.body
-        let error
+        let errors
         User.findOne({ where: { userName } })
             .then(user => {
                 if (user) {
@@ -187,12 +233,12 @@ class Controller {
 
                         res.redirect('/')
                     } else {
-                        error = 'username/password ga oke bos'
-                        res.send(error) //redirect ke halaman login lagi kirim error via query
+                        errors = 'Invalid username/password'
+                        res.redirect(`/signIn?errors=${errors}`)
                     }
                 } else {
-                    error = 'kamu kayanya belum daftar bro ga ada username kamu nih di db'
-                    res.send(error)
+                    errors = 'There is no username registered'
+                    res.redirect(`/signIn?errors=${errors}`)
                 }
             })
             .catch(err => {
@@ -210,40 +256,89 @@ class Controller {
         })
     }
 
-    static delete(req, res){
-        const MemeId = req.params.memeId
-        const commentId = req.params.commentId
-
-        MemeDetail.destroy({
-            where: {
-                id: commentId
-            }
+    static userProfile(req, res) {
+        const { success, errors } = req.query
+        const { id } = req.params
+        let user
+        User.findByPk(id)
+            .then(userData => {
+                user = userData
+                return UserProfile.findOne({ where: { UserId: id } })
             })
-            .then(()=>{
-                res.redirect(`/meme/${MemeId}`)
+            .then(userProfile => {
+                res.render('userProfile', { user, userProfile, success, errors })
             })
-            .catch((err)=>{
+            .catch(err => {
                 res.send(err)
             })
     }
 
-    static editComment(req, res){
-        const MemeId = req.params.memeId
-        const commentId = req.params.commentId
-        const { comment } = req.body
-
-        MemeDetail.update({
-            comment
-            },{
+    static userProfilePost(req, res) {
+        const { id } = req.params
+        const { firstName, lastName, dateOfBirth, bio } = req.body
+        const userProfile = {
+            firstName,
+            lastName,
+            dateOfBirth,
+            bio
+        }
+        UserProfile.update(userProfile, {
             where: {
-                id: commentId
+                UserId: id
             }
+        })
+            .then(() => {
+                res.redirect(`/user/${id}/profile?success=true`)
             })
-            .then(()=>{
-                res.redirect(`/meme/${MemeId}`)
+            .catch(err => {
+                if (err.name === 'SequelizeValidationError') {
+                    const errors = err.errors.map(el => {
+                        return el.message
+                    })
+                    res.redirect(`/user/${id}/profile?errors=${errors}`)
+                } else {
+                    res.send(err)
+                }
             })
-            .catch((err)=>{
-                res.redirect(`/meme/${MemeId}`)
+    }
+
+    static userAccount(req, res) {
+        const { success, errors } = req.query
+        const { id } = req.params
+        User.findByPk(id)
+            .then(user => {
+                res.render('userAccount', { user, success, errors })
+            })
+            .catch(err => {
+                res.send(err)
+            })
+    }
+
+    static userAccountPost(req, res) {
+        const { email, password } = req.body
+        const { id } = req.params
+        const user = {
+            email,
+            password
+        }
+        User.update(user, {
+            where: {
+                id
+            },
+            individualHooks: true //<< tai!
+        })
+            .then(() => {
+                res.redirect(`/user/${id}/account?success=true`)
+            })
+            .catch(err => {
+                if (err.name === 'SequelizeValidationError') {
+                    const errors = err.errors.map(el => {
+                        return el.message
+                    })
+                    res.redirect(`/user/${id}/account?errors=${errors}`)
+                } else {
+                    res.send(err)
+                }
             })
     }
 }
