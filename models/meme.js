@@ -10,11 +10,12 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Meme.hasMany(models.Tag)
+      Meme.belongsTo(models.Tag)
       Meme.belongsToMany(models.User, {
         through: models.MemeDetail
       })
     }
+    
   }
   Meme.init({
     title: DataTypes.STRING,

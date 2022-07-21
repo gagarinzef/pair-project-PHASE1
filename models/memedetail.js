@@ -10,7 +10,31 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      
+    }
+
+    static countComment(){
+
+      let comment;
+      let result = {}
+      return MemeDetail.findAll({
+        attributes: ['comment', 'MemeId'],
+        raw:true
+      })
+      .then((data)=>{
+        comment = data
+        comment.forEach(el=>{
+          if(result[el.MemeId] === undefined){
+            result[el.MemeId] = 0
+          }
+          result[el.MemeId]++
+        })
+        return result
+      })
+      .catch(()=>{
+        return 'error'
+      })
+      // [sequelize.fn('count', sequelize.col('comment')), 'count']
     }
   }
   MemeDetail.init({

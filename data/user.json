@@ -1,0 +1,32 @@
+[
+    {
+        "userName": "gagarin",
+        "password": 1234,
+        "email": "gagarinzef@gmail.com",
+        "isAdmin": false
+    },
+    {
+        "userName": "zefanya",
+        "password": 4321,
+        "email": "bapuk@gmail.com",
+        "isAdmin": false
+    },
+    {
+        "userName": "ronaldo",
+        "password": 54321,
+        "email": "taiayam@gmail.com",
+        "isAdmin": false
+    },
+    {
+        "userName": "messi",
+        "password": 4343,
+        "email": "messi@gmail.com",
+        "isAdmin": false
+    },
+    {
+        "userName": "mbappe",
+        "password": 1234,
+        "email": "mbappe@gmail.com",
+        "isAdmin": false
+    }
+]
