@@ -4,20 +4,23 @@ const { timeSince } = require('../helper/helper')
 const { Op } = require("sequelize")
 
 class Controller {
+    static landingPage(req, res) {
+        res.render('landingPage')
+    }
     static home(req, res) {
         const user = req.session.user
         const filter = req.query.filter
         const search = req.query.search
 
         let optUser = {}
-        if (filter){
+        if (filter) {
             optUser = {
                 name: filter
             }
         }
 
         let optMeme = {}
-        if(search){
+        if (search) {
             optMeme = {
                 title: {
                     [Op.iLike]: `%${search}%`
@@ -34,7 +37,7 @@ class Controller {
                 where: optUser
             }],
             where: optMeme
-            })
+        })
             .then((data) => {
                 meme = data
                 return Tag.findAll()
@@ -62,7 +65,7 @@ class Controller {
                 model: User,
                 attributes: ['id', 'userName']
             }
-            })
+        })
             .then((data) => {
                 meme = data
                 return MemeDetail.findAll({
@@ -97,7 +100,7 @@ class Controller {
 
     static addMemePage(req, res) {
         let error = req.query.error
-        const {user} = req.session
+        const { user } = req.session
         Tag.findAll()
             .then((tag) => {
                 res.render('add-meme', { tag, error, user })
@@ -117,7 +120,7 @@ class Controller {
             imageURL: filename,
             TagId,
             UserId: id
-            })
+        })
             .then(() => {
                 res.redirect('/')
             })
@@ -131,27 +134,27 @@ class Controller {
             })
     }
 
-    static deleteMeme(req,res){
-       const memeId = +req.params.memeId
+    static deleteMeme(req, res) {
+        const memeId = +req.params.memeId
 
-       MemeDetail.destroy({
+        MemeDetail.destroy({
             where: {
                 MemeId: memeId
             }
-       })
-       .then(()=>{
-            return Meme.destroy({
-                where: {
-                    id: memeId
-                }
+        })
+            .then(() => {
+                return Meme.destroy({
+                    where: {
+                        id: memeId
+                    }
+                })
             })
-       })
-       .then(()=>{
-            res.redirect('/')
-       })
-       .catch((err)=>{
-            res.send(err)
-       })
+            .then(() => {
+                res.redirect('/')
+            })
+            .catch((err) => {
+                res.send(err)
+            })
     }
 
     static deleteComment(req, res) {
@@ -162,7 +165,7 @@ class Controller {
             where: {
                 id: commentId
             }
-            })
+        })
             .then(() => {
                 res.redirect(`/meme/${MemeId}`)
             })
@@ -178,11 +181,11 @@ class Controller {
 
         MemeDetail.update({
             comment
-            }, {
+        }, {
             where: {
                 id: commentId
             }
-            })
+        })
             .then(() => {
                 res.redirect(`/meme/${MemeId}`)
             })
@@ -317,7 +320,7 @@ class Controller {
             where: {
                 UserId: id
             }
-            })
+        })
             .then(() => {
                 res.redirect(`/user/${id}/profile?success=true`)
             })
@@ -357,7 +360,7 @@ class Controller {
                 id
             },
             individualHooks: true
-            })
+        })
             .then(() => {
                 res.redirect(`/user/${id}/account?success=true`)
             })
@@ -373,60 +376,60 @@ class Controller {
             })
     }
 
-    static tag(req,res){
-        const {user} = req.session
+    static tag(req, res) {
+        const { user } = req.session
         Tag.findAll()
-        .then(tags=>{
-            res.render('tag',{tags, user})
-        })
+            .then(tags => {
+                res.render('tag', { tags, user })
+            })
     }
 
-    static tagAddForm(req,res){
-        const {success,errors} = req.query
-        const {user} = req.session
-        res.render('tagAdd', {user, success, errors})
+    static tagAddForm(req, res) {
+        const { success, errors } = req.query
+        const { user } = req.session
+        res.render('tagAdd', { user, success, errors })
     }
 
-    static tagAddPost(req,res){
-        const {tag} = req.body
+    static tagAddPost(req, res) {
+        const { tag } = req.body
         const tagData = {
             name: tag
         }
         Tag.create(tagData)
-        .then(()=>{
-            res.redirect(`/tag/add?success=true`)
-        })
-        .catch(err=>{
-            if (err.name === 'SequelizeValidationError' || err.name === 'SequelizeUniqueConstraintError') {
-                const errors = err.errors.map(el => {
-                    return el.message
-                })
-                res.redirect(`/tag/add?errors=${errors}`)
-            }else{
-                res.send(err)
-            }
-        })
+            .then(() => {
+                res.redirect(`/tag/add?success=true`)
+            })
+            .catch(err => {
+                if (err.name === 'SequelizeValidationError' || err.name === 'SequelizeUniqueConstraintError') {
+                    const errors = err.errors.map(el => {
+                        return el.message
+                    })
+                    res.redirect(`/tag/add?errors=${errors}`)
+                } else {
+                    res.send(err)
+                }
+            })
     }
 
 
-    static tagDelete(req,res){
+    static tagDelete(req, res) {
         const tagId = +req.params.tagId
         Tag.destroy({
-            where:{
+            where: {
                 id: tagId
             }
         })
-        .then(()=>{
-            res.redirect('/tag')
-        })
-        .catch(err=>{
-            res.send(err)
-        })
+            .then(() => {
+                res.redirect('/tag')
+            })
+            .catch(err => {
+                res.send(err)
+            })
     }
 
 
 
-    
+
 }
 
 module.exports = Controller

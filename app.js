@@ -4,6 +4,7 @@ const port = 3000
 const session = require('express-session')
 const router = require('./router/router')
 
+app.use(express.static('public'))
 app.use('/uploads', express.static('uploads'))
 app.set('view engine', 'ejs')
 app.use(express.urlencoded({ extended: true }))
