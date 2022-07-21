@@ -5,12 +5,37 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css">
   <title>Document</title>
 </head>
+<%- include('./partials/home-style') %>
+<%- include('./partials/form-style') %>
+<style>
+  .topnav {
+    overflow: hidden;
+    background-color: #B08B71;
+  }
+  
+  .topnav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
 
+  .btn1{
+      border: 2px solid rgb(78, 119, 255);
+      background-color: rgb(78, 119, 255);
+      color: white;
+      border-radius: 2px;
+      transition-duration: 0.4s;
+    }
+</style>
 <body>
   <%- include('partials/navbar') %>
-  <div style="display: flex; justify-content:center">
+  <div style="display: flex; justify-content:center; margin-top: 50px; margin-bottom: 20px;">
     <h1>
       <%=user.userName%>'s Profile
     </h1>
@@ -34,22 +59,20 @@
       </div>
       <%}%>
 
-        <div style="display: flex; justify-content:center">
+        <div class="form">
           <form action="/user/<%=user.id%>/profile" method="POST">
-            <div style="display:flex; flex-direction: column; justify-content: center;">
-              <label style="margin-bottom: 5px;" for="firstName">First Name: </label style="margin-bottom: 5px;">
-              <input style="margin-bottom: 5px;" type="text" name="firstName" id="firstName"
-                value="<%=userProfile.firstName%>">
-              <label style="margin-bottom: 5px;" for="lastName">Last Name: </label style="margin-bottom: 5px;">
-              <input style="margin-bottom: 5px;" type="text" name="lastName" id="lastName"
+            <div>
+              <label for="firstName">First Name: </label>
+              <input type="text" name="firstName" id="firstName" value ="<%=userProfile.firstName%>">
+              <label for="lastName">Last Name: </label>
+              <input type="text" name="lastName" id="lastName"
                 value="<%=userProfile.lastName%>">
-              <label style="margin-bottom: 5px;" for="dateOfBirth">Date of Birth: </label>
-              <input style="margin-bottom: 5px;" type="date" name="dateOfBirth" id="dateOfBirth"
+              <label  for="dateOfBirth">Date of Birth: </label>
+              <input  type="date" name="dateOfBirth" id="dateOfBirth"
                 value="<%=userProfile.dateOfBirth%>">
-              <label style="margin-bottom: 5px;" for="bio">Bio: </label>
-              <textarea style="margin-bottom: 5px;" name="bio" id="bio" cols="30"
-                rows="10"><%=userProfile.bio%></textarea>
-              <input type="submit" value="Update My Profile">
+              <label for="bio">Bio:</label>
+              <textarea name="bio" id="bio" cols="30" rows="10"><%=userProfile.bio%></textarea>
+              <button class="btn1" type="submit">Update My Profile</button>
             </div>
           </form>
         </div>
