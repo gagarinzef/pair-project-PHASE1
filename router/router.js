@@ -40,7 +40,19 @@ router.use(function (req, res, next) {
   }
 })
 
+const isAdmin = function (req,res,next){
+  if(!req.session.user.isAdmin){
+    res.redirect('/')
+  }else{
+    next()
+  }
+}
+
 router.get('/', Controller.home)
+router.get('/tag', isAdmin, Controller.tag)
+router.get('/tag/add', isAdmin, Controller.tagAddForm)
+router.post('/tag/add', Controller.tagAddPost)
+router.get('/tag/:tagId/delete', isAdmin, Controller.tagDelete)
 router.get('/meme/add', Controller.addMemePage)
 router.post('/meme/add', upload.single('imageURL'), Controller.addMeme)
 router.get('/meme/:id', Controller.memeDetail)
