@@ -25,6 +25,8 @@ router.get('/meme/add', Controller.addMemePage)
 router.post('/meme/add', Controller.addMeme)
 router.get('/meme/:id', Controller.memeDetail)
 router.post('/meme/:id', Controller.addComment)
+router.get('/meme/:memeId/delete/:commentId', Controller.delete)
+router.post('/meme/:memeId/edit/:commentId', Controller.editComment)
 router.get('/signOut', Controller.signOut)
 
 

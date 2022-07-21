@@ -1,10 +1,10 @@
 const { Meme, MemeDetail, User, UserProfile, Tag } = require('../models')
 const bcrypt = require('bcryptjs')
 const { timeSince } = require('../helper/helper')
-const { reset } = require('nodemon')
 
 class Controller {
     static home(req, res) {
+        const user = req.session.user
         const filter = req.query.filter
 
         let opt = {}
@@ -32,7 +32,7 @@ class Controller {
                 return MemeDetail.countComment()
             })
             .then((memeDetail) => {
-                res.render('home', { meme, tag, memeDetail })
+                res.render('home', { meme, tag, memeDetail, user })
             })
             .catch((err) => {
                 res.send(err)
@@ -40,7 +40,9 @@ class Controller {
     }
 
     static memeDetail(req, res) {
+        const query = +req.query.edit
         const MemeId = +req.params.id
+        const user = req.session.user
 
         let meme;
         Meme.findByPk(MemeId, {
@@ -52,6 +54,7 @@ class Controller {
             .then((data) => {
                 meme = data
                 return MemeDetail.findAll({
+                    attributes: ['id', 'comment', 'createdAt', 'UserId', 'MemeId'],
                     where: {
                         MemeId
                     },
@@ -59,7 +62,8 @@ class Controller {
                 })
             })
             .then((detail) => {
-                res.render('meme', { meme, detail, timeSince })
+                // res.send(detail)
+                res.render('meme', { meme, detail, timeSince, user, query })
             })
             .catch((err) => {
                 res.send(err)
@@ -70,20 +74,22 @@ class Controller {
         const MemeId = +req.params.id
         const { comment } = req.body
         const { id } = req.session.user
+
         MemeDetail.create({ comment, MemeId, UserId: id })
             .then(() => {
                 res.redirect(`/meme/${MemeId}`)
             })
             .catch((err) => {
-                res.send(err)
+                res.redirect(`/meme/${MemeId}`)
             })
     }
 
     static addMemePage(req, res) {
+        let error = req.query.error
+
         Tag.findAll()
             .then((tag) => {
-                console.log(tag)
-                res.render('add-meme', { tag })
+                res.render('add-meme', { tag, error })
             })
             .catch((err) => {
                 res.send(err)
@@ -91,20 +97,25 @@ class Controller {
     }
 
     static addMeme(req, res) {
-        console.log(req.body)
+        const { id } = req.session.user
         const { title, imageURL, TagId } = req.body
 
         Meme.create({
             title,
             imageURL,
             TagId,
-            UserId: 1
-        })
+            UserId: id
+            })
             .then(() => {
                 res.redirect('/')
             })
             .catch((err) => {
-                res.send(err)
+                if(err.name === "SequelizeValidationError"){
+                    let error = err.errors.map(el=>el.message.split('-'))
+                    res.redirect(`/meme/add?error=${error}`)
+                } else {
+                    res.send(err)
+                }
             })
     }
 
@@ -197,6 +208,43 @@ class Controller {
                 res.redirect('/signIn')
             }
         })
+    }
+
+    static delete(req, res){
+        const MemeId = req.params.memeId
+        const commentId = req.params.commentId
+
+        MemeDetail.destroy({
+            where: {
+                id: commentId
+            }
+            })
+            .then(()=>{
+                res.redirect(`/meme/${MemeId}`)
+            })
+            .catch((err)=>{
+                res.send(err)
+            })
+    }
+
+    static editComment(req, res){
+        const MemeId = req.params.memeId
+        const commentId = req.params.commentId
+        const { comment } = req.body
+
+        MemeDetail.update({
+            comment
+            },{
+            where: {
+                id: commentId
+            }
+            })
+            .then(()=>{
+                res.redirect(`/meme/${MemeId}`)
+            })
+            .catch((err)=>{
+                res.redirect(`/meme/${MemeId}`)
+            })
     }
 }
 
