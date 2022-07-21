@@ -25,6 +25,12 @@
                 </button>
             </form>
             <% }) %>
+    </div><br>
+    <div style="display: flex; justify-content:center">
+        <form action="/" method="get">
+            <input type="text" name="search">
+            <button type="submit">Search</button>
+        </form>
     </div>
     <% meme.forEach(el=> { %>
         <div class="card" style="display: flex; justify-content:center">
@@ -39,11 +45,11 @@
                     </span> |
                     <% if (!el.Users.length) { %>
                         <span><a href="meme/<%= el.id %>">Comment</a></span>
-                        <% } else { %>
-                            <% for (const key in memeDetail) {%>
-                                <% if (+key===el.id) { %>
-                                    <span>
-                                        <%= memeDetail[key] %> <a href="/meme/<%= +key %>">Comments</a>
+                    <% } else { %>
+                        <% for (const key in memeDetail) {%>
+                            <% if (+key === el.id) { %>
+                                <span>
+                                    <%= memeDetail[key] %> <a href="/meme/<%= +key %>">Comments</a>
                                 </span>
                             <% } %>
                         <% }%>
@@ -51,11 +57,11 @@
                     |
                     <span>
                         <a href="/meme/<%= el.id %>/delete"><button>Delete</button></a>
-                </span>
+                    </span>
                 </div>
             </div>
         </div>
-        <% }) %>
+    <% }) %>
 </body>
 
 </html>
