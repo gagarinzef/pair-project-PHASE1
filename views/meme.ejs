@@ -28,9 +28,9 @@
             <a href="/">8gag</a> |
             <a href="/meme/add">Add Meme</a>
             <div style="float: right;">
-                <a href="">Username</a>
+                Welcome, <a href="" style="color: blue; text-decoration: none"><%= user.userName %></a>!
                 <a href="">Your Meme</a>
-                <a href="">Sign Out</a>
+                <a href="/signOut">Sign Out</a>
             </div>
         </nav>
     </div>
@@ -42,7 +42,26 @@
             <p><a href="/">Back</a></p>
             <div style="display: flex; justify-content:center;">
                 <img src="<%=meme.imageURL %>" alt="image of meme">
-            </div>
+            </div><br>
+            <% if (query) { %>
+                <% detail.forEach(el => { %>
+                    <% if (query === +el.id) { %>
+                        <form action="/meme/<%=meme.id %>/edit/<%= el.id%>" method="post">
+                            <div>
+                                <textarea name="comment" id="" cols="53" rows="2"><%= el.comment %></textarea>
+                            </div>
+                            <button type="submit">Post Comment</button>
+                        </form>
+                    <% } %>
+                <% }) %>
+            <% } else { %>
+                <form action="/meme/<%=meme.id %>" method="post">
+                    <div>
+                        <textarea name="comment" id="" cols="53" rows="2" placeholder="Your comment here..."></textarea>
+                    </div>
+                    <button type="submit">Post Comment</button>
+                </form>
+            <% } %>
             <% if (detail) { %>
                 <div class="ex3">
                 <% detail.forEach(x => { %>
@@ -53,15 +72,17 @@
                     <% }) %>
                         <p  class= "ex3" style="border: solid 1px black; border-radius: 5px; padding: 10px; padding-left: 5px; margin: 0px;"><%= x.comment %></p>
                         <p style="margin-top: 0px;"><%=timeSince(x.createdAt)%></p>
+                        <% if (x.UserId === user.id) { %>
+                            <div style="display: flex;">
+                                <form action="/meme/<%= meme.id %>">
+                                    <button name="edit" value="<%= x.id %>">Edit</button>
+                                </form>
+                                <a href="/meme/<%= meme.id %>/delete/<%= x.id %>"><button>Delete</button></a>
+                            </div>
+                        <% } %>
                 <% }) %>
                 </div>
             <% } %>
-            <form action="/meme/<%=meme.id %>" method="post">
-                <div>
-                    <textarea name="comment" id="" cols="53" rows="2" placeholder="Your Comment..."></textarea>
-                </div>
-                <button type="submit">Post Comment</button>
-            </form>
         </div>
     </div>
 </body>

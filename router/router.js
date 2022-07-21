@@ -1,7 +1,6 @@
 const Controller = require('../controllers/controller')
 const router = require('express').Router()
 const multer = require('multer')
-// const upload = multer({ dest: 'uploads/' })
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -50,6 +49,8 @@ router.get('/user/:id/profile', Controller.userProfile)
 router.post('/user/:id/profile', Controller.userProfilePost)
 router.get('/user/:id/account', Controller.userAccount)
 router.post('/user/:id/account', Controller.userAccountPost)
+router.get('/meme/:memeId/delete/:commentId', Controller.delete)
+router.post('/meme/:memeId/edit/:commentId', Controller.editComment)
 router.get('/signOut', Controller.signOut)
 
 

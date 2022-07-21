@@ -34,11 +34,15 @@ module.exports = (sequelize, DataTypes) => {
       .catch(()=>{
         return 'error'
       })
-      // [sequelize.fn('count', sequelize.col('comment')), 'count']
     }
   }
   MemeDetail.init({
-    comment: DataTypes.TEXT,
+    comment: {
+      type: DataTypes.TEXT,
+      validate: {
+        notEmpty: true
+      }
+    },
     UserId: DataTypes.INTEGER,
     MemeId: DataTypes.INTEGER
   }, {
