@@ -20,11 +20,11 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 
 
+router.get('/', Controller.landingPage)
 router.get('/signUp', Controller.signUpForm)
 router.post('/signUp', Controller.signUpPost)
 router.get('/signIn', Controller.signInForm)
 router.post('/signIn', Controller.signInPost)
-router.get('/landingPage', Controller.landingPage)
 
 
 router.use(function (req, res, next) {
@@ -43,7 +43,7 @@ const isAdmin = function (req, res, next) {
   }
 }
 
-router.get('/', Controller.home)
+router.get('/home', Controller.home)
 router.get('/tag', isAdmin, Controller.tag)
 router.get('/tag/add', isAdmin, Controller.tagAddForm)
 router.post('/tag/add', Controller.tagAddPost)

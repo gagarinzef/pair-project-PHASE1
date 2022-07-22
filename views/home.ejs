@@ -5,11 +5,11 @@
         <h1>MEME</h1>
     </div>
     <div style="display: flex; justify-content:center">
-        <form action="/" method="get">
+        <form action="/home" method="get">
             <button>All</button>
         </form>
         <% tag.forEach(el=> { %>
-            <form action="/" method="get">
+            <form action="/home" method="get">
                 <button name="filter" value="<%= el.name %>">
                     <%= el.name %>
                 </button>
@@ -17,7 +17,7 @@
             <% }) %>
     </div><br>
     <div class ="search">
-        <form action="/" method="get">
+        <form action="/home" method="get">
             <input type="text" name="search">
             <button type="submit" class="btn3">Search</button>
         </form>

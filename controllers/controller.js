@@ -130,7 +130,7 @@ class Controller {
             UserId: id
         })
             .then(() => {
-                res.redirect('/')
+                res.redirect('/home') 
             })
             .catch((err) => {
                 if (err.name === "SequelizeValidationError") {
@@ -158,7 +158,7 @@ class Controller {
                 })
             })
             .then(() => {
-                res.redirect('/')
+                res.redirect('/home') 
             })
             .catch((err) => {
                 res.send(err)
@@ -273,7 +273,7 @@ class Controller {
                             isAdmin
                         }
 
-                        res.redirect('/')
+                        res.redirect('/home') 
                     } else {
                         errors = 'Invalid username/password'
                         res.redirect(`/signIn?errors=${errors}`)
