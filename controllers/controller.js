@@ -301,6 +301,13 @@ class Controller {
     static userProfile(req, res) {
         const { success, errors } = req.query
         const { id } = req.params
+        const UserId = req.session.user.id
+        if(id){
+            console.log(id,UserId)
+            if (+id !== UserId) {
+             return res.redirect(`/user/${UserId}/profile`)
+            }
+        } 
         let user
         User.findByPk(id)
             .then(userData => {
@@ -347,6 +354,13 @@ class Controller {
     static userAccount(req, res) {
         const { success, errors } = req.query
         const { id } = req.params
+        const UserId = req.session.user.id
+        if(id){
+            console.log(id,UserId)
+            if (+id !== UserId) {
+             return res.redirect(`/user/${UserId}/account`)
+            }
+        }       
         User.findByPk(id)
             .then(user => {
                 res.render('userAccount', { user, success, errors })
