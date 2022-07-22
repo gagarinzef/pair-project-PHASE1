@@ -1,14 +1,14 @@
 <div>
   <nav>
     <div class="topnav">
-        <a class="active" href="/home">8gag</a>
-        <a class="active" href="/meme/add">Add Meme</a>
+        <a href="/home"><img src="../../assets/logo.png" class="logo" alt="Logo" style="height:40px;"></a>
+        <a href="/meme/add" style="padding-top:20px">Add Meme</a>
         <% if (user.isAdmin) {%>
-          <a class="active" href="/tag/">Tags</a>
+          <a href="/tag/">Tags</a>
         <%}%>
-        <a style="float: right;" class="active" href="/signOut">Sign Out</a>
-        <a style="float: right;" class="active" href="/user/<%=user.id%>/profile">Manage Profile</a>
-        <a style="float: right;" class="active" href="/user/<%=user.id%>/account">Hi, <%=user.userName%></a>
+        <a style="float: right; padding-top:20px; " href="/signOut">Sign Out</a>
+        <a style="float: right; padding-top:20px; " href="/user/<%=user.id%>/profile">Manage Profile</a>
+        <a style="float: right; padding-top:20px; " href="/user/<%=user.id%>/account">Hi, <%=user.userName%></a>
     </div>
   </nav>
 </div>
