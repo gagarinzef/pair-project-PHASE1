@@ -1,0 +1,31 @@
+<%- include('./partials/header') %>
+<body>
+  <%- include('partials/navbar') %>
+  <div style="display: flex; justify-content:center; margin-top: 50px; margin-bottom: 20px;">
+    <h1>Add Tag</h1>
+  </div>
+  <div style="display: flex; justify-content:center">
+    <% if(success) { %>
+      <p style="color:green">
+        <%='New Tag created!'%>
+      </p>
+    <% } else if (errors) { %>
+      <%errors.split(',').map(el=>{%>
+        <p style="color:red; margin-right: 5px">
+          <%=el%>
+        </p>
+        <%})%>
+    <% } %>
+  </div>
+  <div class="form">
+      <form action="/tag/add" method="POST">
+        <div>
+          <label for="tag">Tag Name</label><br>
+          <input type="text" name="tag" id="tag">
+          <button class="btn3" type="submit">Add Tag</button>
+        </div>
+      </form>
+  </div>
+
+</body>
+</html>

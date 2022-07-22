@@ -1,0 +1,33 @@
+<%- include('partials/header') %>
+<body>
+  <%- include('partials/navbar') %>
+    <div style="display: flex; justify-content:center; margin-top: 50px; margin-bottom: 20px;">
+      <h1>List Tags</h1>
+    </div>
+    <div style="margin-top: 10px; margin-left:10px; display: flex; justify-content:center">
+      <a href="/tag/add">Add Tags</a>
+    </div>
+    <div style="display: flex; justify-content:center">
+    <table border="1" class="styled-table">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Tags</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% tags.map((el,idx)=>{ %>
+          <tr>
+            <td><%=idx+1%></td>
+            <td><%=el.name%></td>
+            <td>
+                <a style="color: red;" href="/tag/<%=el.id%>/delete">Delete</a>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

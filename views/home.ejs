@@ -1,0 +1,64 @@
+<%- include('partials/header') %>
+<body>
+<%- include('partials/navbar') %>
+    <div style="display: flex; justify-content:center">
+        <h1>MEME</h1>
+    </div>
+    <div style="display: flex; justify-content:center">
+        <form action="/" method="get">
+            <button>All</button>
+        </form>
+        <% tag.forEach(el=> { %>
+            <form action="/" method="get">
+                <button name="filter" value="<%= el.name %>">
+                    <%= el.name %>
+                </button>
+            </form>
+            <% }) %>
+    </div><br>
+    <div class ="search">
+        <form action="/" method="get">
+            <input type="text" name="search">
+            <button type="submit" class="btn3">Search</button>
+        </form>
+    </div>
+    <% meme.forEach(el=> { %>
+        <div class = "row">
+            <div class = "card">
+            <% profile.forEach(element => { %>
+                <% if (el.UserId === element.UserId) { %>
+                    <p><%= element.getFullName(element.UserId) %></p>
+                <% } %>
+            <% }) %>
+                <h3>
+                    <%= el.title %>
+                </h3>
+                <div style="display: flex; justify-content:center;">
+                    <img class="img-home" src="../uploads/<%= el.imageURL %>" alt="image of meme">
+                </div>
+                <div style="margin-top: 30px;">
+                    <span>
+                        <%= el.Tag.name %>
+                    </span> |
+                    <% if (!el.Users.length) { %>
+                        <span><a href="meme/<%= el.id %>">Comment</a></span>
+                    <% } else { %>
+                        <% for (const key in memeDetail) {%>
+                            <% if (+key === el.id) { %>
+                                <span>
+                                    <%= memeDetail[key] %> <a href="/meme/<%= +key %>">Comments</a>
+                                </span>
+                            <% } %>
+                        <% }%>
+                    <% } %>
+                    |
+                    <span>
+                        <a href="/meme/<%= el.id %>/delete"><button class="btn2">Delete</button></a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    <% }) %>
+</body>
+
+</html>

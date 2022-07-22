@@ -1,0 +1,28 @@
+<%- include('./partials/header') %>
+<div style="display: flex; justify-content:center; margin:40px">
+  <h1>Sign Up</h1>
+</div>
+<%if(errors) {%>
+  <%errors.split(',').map(el=>{%>
+    <p style="color:red; margin-right: 5px">
+      <%=el%>
+    </p>
+
+    <%})}%>
+    <div class="form">
+      <form action="/signUp" method="POST">
+        <label for="userName">Username:</label>
+        <input type="text" name="userName" id="userName">
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password">
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email">
+        <label for="firstName">First Name</label>
+        <input type="text" name="firstName" id="firstName">
+        <label for="lastName">Last Name</label>
+        <input type="text" name="lastName" id="lastName">
+        <label for="dateOfBirth">Date Of Birth</label>
+        <input type="date" name="dateOfBirth" id="dateOfBirth">
+        <button type="submit" class="btn1">Register</button>
+      </form>
+    </div>

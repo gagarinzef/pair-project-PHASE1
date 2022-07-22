@@ -1,0 +1,41 @@
+<%- include('partials/header') %>
+<body>
+  <%- include('partials/navbar') %>
+  <div style="display: flex; justify-content:center; margin-top: 50px; margin-bottom: 20px;">
+    <h1>
+      <%=user.userName%>'s Account
+    </h1>
+  </div>
+
+  <% if (success) {%>
+    <div style="display: flex; justify-content:center">
+      <p style="color:green">
+        <%='Your changes have been successfully saved!'%>
+      </p>
+    </div>
+    <%}else if(errors) {%>
+      <div style="display: flex; justify-content:center">
+        <%errors.split(',').map(el=>{%>
+
+          <p style="color:red; margin-right: 5px">
+            <%=el%>
+          </p>
+
+          <%})%>
+      </div>
+      <%}%>
+
+        <div class="form">
+          <form action="/user/<%=user.id%>/account" method="POST">
+            <div>
+              <label for="email">Email: </label>
+              <input type="email" name="email" id="email" value="<%=user.email%>">
+              <label for="password">Password: </label>
+              <input type="password" name="password" id="password">
+              <button type="submit" class="btn1">Update My Account</button>
+            </div>
+          </form>
+        </div>
+</body>
+
+</html>

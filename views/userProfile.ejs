@@ -1,0 +1,47 @@
+<%- include('partials/header') %>
+<body>
+  <%- include('partials/navbar') %>
+  <div style="display: flex; justify-content:center; margin-top: 50px; margin-bottom: 20px;">
+    <h1>
+      <%=user.userName%>'s Profile
+    </h1>
+  </div>
+
+  <% if (success) {%>
+    <div style="display: flex; justify-content:center">
+      <p style="color:green">
+        <%='Your changes have been successfully saved!'%>
+      </p>
+    </div>
+    <%}else if(errors) {%>
+      <div style="display: flex; justify-content:center">
+        <%errors.split(',').map(el=>{%>
+
+          <p style="color:red; margin-right: 5px">
+            <%=el%>
+          </p>
+
+          <%})%>
+      </div>
+      <%}%>
+
+        <div class="form">
+          <form action="/user/<%=user.id%>/profile" method="POST">
+            <div>
+              <label for="firstName">First Name: </label>
+              <input type="text" name="firstName" id="firstName" value ="<%=userProfile.firstName%>">
+              <label for="lastName">Last Name: </label>
+              <input type="text" name="lastName" id="lastName"
+                value="<%=userProfile.lastName%>">
+              <label  for="dateOfBirth">Date of Birth: </label>
+              <input  type="date" name="dateOfBirth" id="dateOfBirth"
+                value="<%=userProfile.dateOfBirth%>">
+              <label for="bio">Bio:</label>
+              <textarea name="bio" id="bio" cols="30" rows="10"><%=userProfile.bio%></textarea>
+              <button class="btn1" type="submit">Update My Profile</button>
+            </div>
+          </form>
+        </div>
+</body>
+
+</html>
