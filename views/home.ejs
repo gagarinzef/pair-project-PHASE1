@@ -51,10 +51,12 @@
                             <% } %>
                         <% }%>
                     <% } %>
+                    <% if (user.isAdmin) { %>
                     |
                     <span>
                         <a href="/meme/<%= el.id %>/delete"><button class="btn2">Delete</button></a>
                     </span>
+                    <% } %>
                 </div>
             </div>
         </div>

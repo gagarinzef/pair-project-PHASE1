@@ -37,7 +37,7 @@ router.use(function (req, res, next) {
 
 const isAdmin = function (req, res, next) {
   if (!req.session.user.isAdmin) {
-    res.redirect('/')
+    res.redirect('/home')
   } else {
     next()
   }
@@ -56,7 +56,7 @@ router.get('/user/:id/profile', Controller.userProfile)
 router.post('/user/:id/profile', Controller.userProfilePost)
 router.get('/user/:id/account', Controller.userAccount)
 router.post('/user/:id/account', Controller.userAccountPost)
-router.get('/meme/:memeId/delete', Controller.deleteMeme)
+router.get('/meme/:memeId/delete',isAdmin, Controller.deleteMeme)
 router.get('/meme/:memeId/delete/:commentId', Controller.deleteComment)
 router.post('/meme/:memeId/edit/:commentId', Controller.editComment)
 router.get('/signOut', Controller.signOut)
