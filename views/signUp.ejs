@@ -2,14 +2,14 @@
 <div style="display: flex; justify-content:center; margin:40px">
   <h1>Sign Up</h1>
 </div>
-<%if(errors) {%>
-  <%errors.split(',').map(el=>{%>
-    <p style="color:red; margin-right: 5px">
-      <%=el%>
-    </p>
-
-    <%})}%>
     <div class="form">
+      <%if(errors) {%>
+        <%errors.split(',').map(el=>{%>
+          <p style="color:red; margin-right: 5px">
+            <%=el%>
+          </p>
+      
+          <%})}%>
       <form action="/signUp" method="POST">
         <label for="userName">Username:</label>
         <input type="text" name="userName" id="userName">
