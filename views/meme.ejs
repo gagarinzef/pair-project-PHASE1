@@ -43,7 +43,9 @@
                                     <button class="btn1" name="edit" value="<%= x.id %>">Edit</button>
                                 </form>
                                 <span style="color: white;">-</span>
+                                <% if (user.isAdmin) { %>
                                 <a href="/meme/<%= meme.id %>/delete/<%= x.id %>"><button class="btn2">Delete</button></a>
+                                <% } %>
                             </div>
                         <% } %>
                 <% }) %>
